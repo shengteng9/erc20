@@ -20,3 +20,13 @@ contract ERC20Interface {
   // 调用approve方法触发的事件
   event Approval(address indexed _owner, address indexed _spender, uint256 _value);
 }
+
+contract MiniToken is ERC2OInterface {
+  string public constant symbol = "MT";
+  string public constant name = "Mini Token";
+  uint8 public constant decimals = 0;
+  uint256 _totalSupply = 1000;
+  // 定义这个合约的拥有者
+  address public owner;
+  // 定义各个
+}
