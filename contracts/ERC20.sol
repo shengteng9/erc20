@@ -22,10 +22,10 @@ contract ERC20Interface {
 }
 
 contract MiniToken is ERC20Interface {
-  string public constant symbol = "MT";
-  string public constant name = "Mini Token";
+  string public constant symbol = "MEMT";
+  string public constant name = "MEM Token";
   uint8 public constant decimals = 0;
-  uint256 _totalSupply = 1000;
+  uint256 _totalSupply = 100000000000;
   // 定义这个合约的拥有者
   address public owner;
   // 定义各个地址余额的映射表
