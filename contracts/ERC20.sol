@@ -21,7 +21,7 @@ contract ERC20Interface {
   event Approval(address indexed _owner, address indexed _spender, uint256 _value);
 }
 
-contract MiniToken is ERC2OInterface {
+contract MiniToken is ERC20Interface {
   string public constant symbol = "MT";
   string public constant name = "Mini Token";
   uint8 public constant decimals = 0;
@@ -29,6 +29,8 @@ contract MiniToken is ERC2OInterface {
   // 定义这个合约的拥有者
   address public owner;
   // 定义各个地址余额的映射表
+  mapping(address => uint256) balances;
+  // 账户所有者批准将金额转移到另一个账户
   mapping(address => mapping(address => uint256)) allowed;
   // 定义一个只能由所有者执行的修饰符
   modifier onlyOwner() {
@@ -40,7 +42,7 @@ contract MiniToken is ERC2OInterface {
   // 初始化构造函数
   constructor () public {
     owner = msg.sender;
-    balance[owner] = _totalSupply;
+    balances[owner] = _totalSupply;
   }
   // 返回总发行量
   function totalSupply() public constant returns (uint256) {
