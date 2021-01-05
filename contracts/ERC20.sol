@@ -28,5 +28,75 @@ contract MiniToken is ERC2OInterface {
   uint256 _totalSupply = 1000;
   // 定义这个合约的拥有者
   address public owner;
-  // 定义各个
+  // 定义各个地址余额的映射表
+  mapping(address => mapping(address => uint256)) allowed;
+  // 定义一个只能由所有者执行的修饰符
+  modifier onlyOwner() {
+    if (msg.sender != owner) {
+      require(msg.sender == owner);
+    }
+    _;
+  }
+  // 初始化构造函数
+  constructor () public {
+    owner = msg.sender;
+    balance[owner] = _totalSupply;
+  }
+  // 返回总发行量
+  function totalSupply() public constant returns (uint256) {
+    return _totalSupply;
+  }
+  // 返回对应账户余额
+  function balanceOf(address _owner) public constant returns (uint256 balance) {
+    return balances[_owner];
+  }
+  // 如果账户拥有的数量大于对账数量，就进行转账，否则返回失败
+  function transfer(address _to, uint256 _amount) public returns (bool success) {
+    if (balances[msg.sender] >= _amount
+      && _amount > 0
+      && balances[_to]+_amount > balances[_to]) {
+      balances[msg.sender] -= _amount;
+      balances[_to] += _amount;
+      emit Transfer(msg.sender, _to, _amount);
+      return true;
+    } else {
+      return false;
+    }
+  }
+  /**
+    * 从_from发送_value个令牌给to地址
+    * 使用transferFrom()方法需要调用者得到_from地址的授权
+    * 授权由F面的approve函数进行操作
+   */
+   function transferFrom(
+     address _from,
+     address _to,
+     uint256 _amount
+   ) public returns (bool success) {
+     if (balances[_from] >= _amount
+      && allowed[_from][msg.sender] >= _amount
+      && _amount > 0
+      && balances[_to] + _amount > balances[_to]) {
+        balances[_from] -= _amount;
+        allowed[_from][msg.sender] -= _amount;
+        balances[_to] += _amount;
+        emit Transfer(_from, _to, _amount);
+        return true;
+      } else {
+        return false;
+      }
+   }
+
+   /** ;
+    * approve 授权第三方（_spender)从发送者账户转移一定量（最多为_value数量）的代币。
+    * 第三方通常是某个只能合约，可以通过transferFrom函数来执行具体的转移操作
+   */
+   function approve(address _spender, uint256 _amount) public returns (bool success) {
+     allowed[msg.sender][_spender] = _amount;
+     emit Approval(msg.sender, _spender, _amount);
+     return true;
+   } 
+   function allowance(address _owner, address _spender) public constant returns (uint256 remaining) {
+     return allowed[_owner][_spender];
+   }
 }
