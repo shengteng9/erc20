@@ -21,7 +21,7 @@ contract ERC20Interface {
   event Approval(address indexed _owner, address indexed _spender, uint256 _value);
 }
 
-contract MiniToken is ERC20Interface {
+contract MEMToken is ERC20Interface {
   string public constant symbol = "MEMT";
   string public constant name = "MEM Token";
   uint8 public constant decimals = 0;
